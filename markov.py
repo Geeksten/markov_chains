@@ -47,17 +47,19 @@ def make_text(chains):
     """Takes dictionary of markov chains; returns random text."""
     link = random.choice(chains.keys())
     text = ""
+    # add the first link to the master string "text"
+    for word in link:
+            text = text + " " + word
+
+    # As long as the (current) key is within the dictionary: 
     while link in chains:
 
-        # Add the words to the string
-        for word in link:
-            text = text + " " + word
+        # Add the value of that key to the master string 
         next_word = random.choice(chains[link])
         text = text + " " + next_word
 
         # Set link to a new value
         link = (link[1], next_word)
-
 
     print text
 
