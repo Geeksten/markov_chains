@@ -31,7 +31,7 @@ def make_chains(text_string):
     words = text_string.split()
 
     chains = {}
-    n = 3
+    n = 5
 
     for i in range(len(words)-n):
         ngram = []
@@ -46,11 +46,12 @@ def make_chains(text_string):
         else:
             chains[ngram].append(words[i+n])
     
-    print chains
+    return chains
 
 
 def make_text(chains):
     """Takes dictionary of markov chains; returns random text."""
+    n = 5
     link = random.choice(chains.keys())
     text = ""
     # add the first link to the master string "text"
@@ -65,28 +66,24 @@ def make_text(chains):
         text = text + " " + next_word
 
         # Set link to a new value
-        link = (link[1], next_word)
+        # From the old link, starting at the second element, add everything 
+        # to an empty list call new_link
+        # Add next-word as the last element of our new_link
+        # Turn the list into a tuple
+        new_link = []
+        for i in range(1,n):
+            new_link.append(link[i])
+        new_link.append(next_word)
+        link = tuple(new_link)
 
-    print text
-
+    print text    
     return text
 
 
         # Set link to link[2], dictionary[link]
 
+#corpus = open_and_read_file("gettysburg.txt")
 corpus = open_and_read_file("green-eggs.txt")
 chains = make_chains(corpus)
-# make_text(chains)
+make_text(chains)
 
-# input_path = "green-eggs.txt"
-
-# # Open the file and turn it into one long string
-# input_text = open_and_read_file(input_path)
-
-# # Get a Markov chain
-# chains = make_chains(input_text)
-
-# # Produce random text
-# random_text = make_text(chains)
-
-# print random_text
