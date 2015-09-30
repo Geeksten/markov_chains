@@ -1,15 +1,17 @@
 import random
 import sys
 
-def open_and_read_file(file_path):
+def open_and_read_file(file_path1, file_path2):
     """Takes file path as string; returns text as string.
 
     Takes a string that is a file path, opens the file, and turns
     the file's contents as one string of text.
     """
 
-    corpus = open(file_path).read().replace("\n", " ")
+    corpus_text1 = open(file_path1).read().replace("\n", " ")
+    corpus_text2 = open(file_path2).read().replace("\n", " ")
 
+    corpus = corpus_text1 + corpus_text2
     return corpus
 
 
@@ -31,7 +33,7 @@ def make_chains(text_string):
     words = text_string.split()
 
     chains = {}
-    n = 5
+    n = 3
 
     for i in range(len(words)-n):
         ngram = []
@@ -51,7 +53,7 @@ def make_chains(text_string):
 
 def make_text(chains):
     """Takes dictionary of markov chains; returns random text."""
-    n = 5
+    n = 3
     link = random.choice(chains.keys())
     text = ""
     # add the first link to the master string "text"
@@ -59,8 +61,8 @@ def make_text(chains):
             text = text + " " + word
 
     # As long as the (current) key is within the dictionary: 
-    while link in chains:
-
+    counter = 0
+    while counter < 40:
         # Add the value of that key to the master string 
         next_word = random.choice(chains[link])
         text = text + " " + next_word
@@ -75,6 +77,7 @@ def make_text(chains):
             new_link.append(link[i])
         new_link.append(next_word)
         link = tuple(new_link)
+        counter += 1
 
     print text    
     return text
@@ -83,7 +86,7 @@ def make_text(chains):
         # Set link to link[2], dictionary[link]
 
 #corpus = open_and_read_file("gettysburg.txt")
-corpus = open_and_read_file("green-eggs.txt")
+corpus = open_and_read_file("childpoems.txt", "dickinson.txt")
 chains = make_chains(corpus)
 make_text(chains)
 
