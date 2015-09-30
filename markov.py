@@ -1,5 +1,5 @@
 import random
-
+import sys
 
 def open_and_read_file(file_path):
     """Takes file path as string; returns text as string.
@@ -31,16 +31,22 @@ def make_chains(text_string):
     words = text_string.split()
 
     chains = {}
+    n = 3
 
-    for i in range(len(words)-2):
-        bigram = words[i], words[i+1]
+    for i in range(len(words)-n):
+        ngram = []
+        j = i
+        while len(ngram) < n:
+            ngram.append(words[j])
+            j += 1
+        ngram = tuple(ngram)
 
-        if bigram not in chains:
-            chains[bigram] = [words[i+2]]
+        if ngram not in chains:
+            chains[ngram] = [words[i+n]]
         else:
-            chains[bigram].append(words[i+2])
-
-    return chains
+            chains[ngram].append(words[i+n])
+    
+    print chains
 
 
 def make_text(chains):
@@ -70,7 +76,7 @@ def make_text(chains):
 
 corpus = open_and_read_file("green-eggs.txt")
 chains = make_chains(corpus)
-make_text(chains)
+# make_text(chains)
 
 # input_path = "green-eggs.txt"
 
